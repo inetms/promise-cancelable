@@ -16,10 +16,10 @@
     "es"
   ],
   "scripts": {
-    "bundle-commonjs": "BABEL_ENV=commonjs babel src --out-dir lib",
-    "bundle-es": "BABEL_ENV=es babel src --out-dir es",
-    "bundle-umd-min": "BABEL_ENV=es NODE_ENV=production rollup -c -i src/index.js -o dist/promise-cancelable.min.js",
-    "bundle-umd": "BABEL_ENV=es NODE_ENV=development rollup -c -i src/index.js -o dist/promise-cancelable.js",
+    "bundle-commonjs": "cross-env BABEL_ENV=commonjs babel src --out-dir lib",
+    "bundle-es": "cross-env BABEL_ENV=es babel src --out-dir es",
+    "bundle-umd-min": "cross-env BABEL_ENV=es NODE_ENV=production rollup -c -i src/index.js -o dist/promise-cancelable.min.js",
+    "bundle-umd": "cross-env BABEL_ENV=es NODE_ENV=development rollup -c -i src/index.js -o dist/promise-cancelable.js",
     "bundle": "npm run bundle-commonjs && npm run bundle-es && npm run bundle-umd-min && npm run bundle-umd",
     "clear": "rimraf lib es dist coverage",
     "lint": "eslint src __tests__",
@@ -33,6 +33,7 @@
     "babel-eslint": "^7.2.3",
     "babel-plugin-transform-class-properties": "^6.24.1",
     "babel-preset-env": "^1.5.1",
+    "cross-env": "^5.1.6",
     "eslint": "^4.1.0",
     "eslint-plugin-import": "^2.3.0",
     "jest": "^20.0.4",
