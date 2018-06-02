@@ -1,3 +1,6 @@
+
+require('promise.prototype.finally/auto');
+
 /**
  * Cancelable identifier.
  */
@@ -138,6 +141,16 @@ export default class Cancelable {
     });
   }
 
+  static finally(value) {
+    if (Cancelable.isCancelable(value)) {
+      return value;
+    }
+
+    return new Cancelable(resolve => {
+      resolve(value);
+    });
+  }
+
   /**
    * Returns a `Cancelable` object that is rejected with the given reason.
    */
@@ -223,6 +236,18 @@ export default class Cancelable {
 
   then(...args) {
     const cancelable = Cancelable.resolve(this.promise.then(...args));
+
+    cancelable.parent = this;
+
+    return cancelable;
+  }
+
+  /**
+   * Has the same behavior of `Promise.finally` method.
+   */
+
+  finally(...args) {
+    const cancelable = Cancelable.finally(this.promise.finally(...args));
 
     cancelable.parent = this;
 

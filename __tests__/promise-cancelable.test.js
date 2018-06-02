@@ -76,6 +76,19 @@ describe('Cancelable', () => {
         expect(value).toBe('foo');
       });
     });
+
+    it('finally is called', async () => {
+      const callback = jest.fn();
+
+      try {
+        await new Cancelable((resolve, reject) => reject('foo'))
+          .finally(callback);
+      } catch (e) {
+        // error discarded
+      }
+
+      expect(callback).toHaveBeenCalled();
+    });
   });
 
   describe('then', () => {
@@ -87,6 +100,28 @@ describe('Cancelable', () => {
       return Cancelable.resolve(1).then(value => value).then(value => {
         expect(value).toBe(1);
       });
+    });
+  });
+
+  describe('finally', () => {
+    it('returns a new Cancelable', () => {
+      expect(Cancelable.isCancelable(Cancelable.resolve().finally()));
+    });
+
+    it('can be chained', () => {
+      return Cancelable.resolve(1).finally().then(value => {
+        expect(value).toBe(1);
+      });
+    });
+
+    it('is called', async () => {
+      const callback = jest.fn();
+
+      await new Cancelable(resolve => resolve('foo'))
+        .finally(callback)
+        .then(value => expect(value).toBe('foo'));
+
+      expect(callback).toHaveBeenCalled();
     });
   });
 
@@ -201,6 +236,27 @@ describe('Cancelable', () => {
       });
 
       cancelable.cancel();
+    });
+
+    it('finally is called', async () => {
+      const callback = jest.fn();
+
+      await new Cancelable(resolve => resolve('foo'))
+        .finally(callback)
+        .cancel();
+
+      expect(callback).toHaveBeenCalled();
+    });
+
+    it('finally is called after catch', async () => {
+      const callback = jest.fn();
+
+      await new Cancelable(resolve => resolve('foo'))
+        .finally(callback)
+        .catch(error => expect(error.name).toBe('CancelationError'))
+        .cancel();
+
+      expect(callback).toHaveBeenCalled();
     });
   });
 
