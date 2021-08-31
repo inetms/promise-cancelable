@@ -11,37 +11,31 @@
   "license": "MIT",
   "files": [
     "dist",
-    "lib",
-    "src",
-    "es"
+    "src"
   ],
   "scripts": {
-    "bundle-commonjs": "cross-env BABEL_ENV=commonjs babel src --out-dir lib",
-    "bundle-es": "cross-env BABEL_ENV=es babel src --out-dir es",
-    "bundle-umd-min": "cross-env BABEL_ENV=es NODE_ENV=production rollup -c -i src/index.js -o dist/promise-cancelable.min.js",
-    "bundle-umd": "cross-env BABEL_ENV=es NODE_ENV=development rollup -c -i src/index.js -o dist/promise-cancelable.js",
-    "bundle": "npm run bundle-commonjs && npm run bundle-es && npm run bundle-umd-min && npm run bundle-umd",
-    "clear": "rimraf lib es dist coverage",
+    "bundle-commonjs": "cross-env BABEL_ENV=commonjs babel src --out-dir dist/lib",
+    "bundle-es": "cross-env BABEL_ENV=es babel src --out-dir dist/es",
+    "bundle": "npm run bundle-commonjs && npm run bundle-es",
+    "clear": "rimraf dist coverage",
     "lint": "eslint src __tests__",
     "prepublish": "npm run clear && npm run bundle",
     "test": "jest",
     "test-watch": "npm test -- --watch --notify"
   },
   "devDependencies": {
-    "babel-cli": "^6.24.1",
-    "babel-core": "^6.24.1",
-    "babel-eslint": "^7.2.3",
+    "@babel/eslint-parser": "^7.15.0",
+    "babel-cli": "^6.26.0",
+    "babel-core": "^6.26.3",
+    "babel-eslint": "^10.1.0",
     "babel-plugin-transform-class-properties": "^6.24.1",
-    "babel-preset-env": "^1.5.1",
-    "cross-env": "^5.1.6",
-    "eslint": "^4.1.0",
-    "eslint-plugin-import": "^2.3.0",
-    "jest": "^20.0.4",
-    "promise.prototype.finally": "^3.1.0",
-    "rimraf": "^2.6.1",
-    "rollup": "^0.43.1",
-    "rollup-plugin-babel": "^3.0.0",
-    "rollup-plugin-node-resolve": "^3.0.0",
-    "rollup-plugin-uglify": "^2.0.1"
+    "babel-preset-env": "^1.7.0",
+    "core-js": "^3.16.4",
+    "cross-env": "^7.0.3",
+    "eslint": "^7.32.0",
+    "eslint-plugin-import": "^2.24.2",
+    "jest": "^27.1.0",
+    "promise.prototype.finally": "^3.1.2",
+    "rimraf": "^3.0.2"
   }
 }
